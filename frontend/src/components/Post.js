@@ -12,7 +12,7 @@ import Add from 'material-ui/svg-icons/content/add'
 import Comments from './Comments';
 import NewComment from './NewComment';
 import { connect } from 'react-redux'
-import { getCategories, getPosts, getComments, postNewComment, incrementCommentCount } from '../actions'
+// import { getComments } from '../actions'
 
 const headers = {
     'Authorization': 'whatever-you-want',
@@ -55,16 +55,12 @@ class Post extends React.Component {
                     </IconButton>
                 </Badge>
                 <span style={{ marinBottom: 10, marginRight: 10, fontWeight: 'bold'}}>{post.voteScore}</span>
-                {/* <Badge primary={true} badgeStyle={{top: 12, right: 12}}> */}
                     <IconButton>
                         <ThumbUp />
                     </IconButton>
-                {/* </Badge> */}
-                {/* <Badge primary={true} badgeStyle={{top: 12, right: 12}}> */}
                     <IconButton>
                         <ThumbDown />
                     </IconButton>
-                {/* </Badge> */}
                 <div style={{ float: 'right', padding: '20px' }}>
                 <IconButton iconStyle={{ width: '20', height: '20' }}>
                     <ModeEdit/>
@@ -81,25 +77,26 @@ class Post extends React.Component {
                 />
                 </div>
             </Card>
-            {/* <Comments comments={this.props.comments} id={post.id} fetchComments={this.props.fetchComments}/>
-            { this.state.newCommentToggle && <NewComment incrementingCommentCount={this.props.incrementingCommentCount} id={post.id} open={this.state.newCommentToggle} close={this.handleCloseAddNewComment.bind(this)} postingNewComment={this.props.postingNewComment}/>} */}
+             <Comments id={post.id}/>
+            {/*{ this.state.newCommentToggle && <NewComment incrementingCommentCount={this.props.incrementingCommentCount} id={post.id} open={this.state.newCommentToggle} close={this.handleCloseAddNewComment.bind(this)} postingNewComment={this.props.postingNewComment}/>} */}
         </Card></div>)
     }
 }
 
-const mapStateToProps = ({ posts }) => ({
-    posts
-})
-function mapDispatchToProps (dispatch) {
-    return {
-        fetchCategories: (data) => dispatch(getCategories(data)),
-        fetchPosts: (data) => dispatch(getPosts(data)),
-        fetchComments: (data) => dispatch(getComments(data)),
-        postingNewComment: (data) => dispatch(postNewComment(data)),
-        incrementingCommentCount: (data) => dispatch(incrementCommentCount(data))
-    }
-}
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Post);
+// const mapStateToProps = ({ posts }) => ({
+//     posts
+// })
+// function mapDispatchToProps (dispatch) {
+//     return {
+//         fetchCategories: (data) => dispatch(getCategories(data)),
+//         fetchPosts: (data) => dispatch(getPosts(data)),
+//         fetchComments: (data) => dispatch(getComments(data)),
+//         postingNewComment: (data) => dispatch(postNewComment(data)),
+//         incrementingCommentCount: (data) => dispatch(incrementCommentCount(data))
+//     }
+// }
+// export default connect(
+//     mapStateToProps,
+//     mapDispatchToProps
+// )(Post);
+export default Post;

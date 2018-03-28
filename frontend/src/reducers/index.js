@@ -75,66 +75,69 @@ function posts ( state = {}, action){
             const { sortBy } = action,
                 originalPosts = state.posts.slice(0)
             let array = []
-                console.log('og', originalPosts)
                 array = getSortedPosts( originalPosts, sortBy )
-                console.log('now', array)
             return {
                 ...state,
-                posts: originalPosts
+                posts: array
             }
         case 'ADD_POST':
             const { res } = action
             let newPost = action.post,
+                postState = state.posts.slice(0),
                 postArr = [],
                 allPostsArr = [],
                 sortedPosts = [];
             postArr.push({...newPost, ...res})
-            allPostsArr.push(state.posts.concat(postArr))
+            allPostsArr = postArr.concat(postState)
             sortedPosts = getSortedPosts( allPostsArr, action.sortBy.sortBy)
-            console.log(newPost, res, {...newPost, ...res}, postArr, allPostsArr, action.sortBy)
-            console.log(sortedPosts)
-            
             return {
                 ...state,
-                posts: state.posts.concat(postArr)
+                posts: sortedPosts
             }
         default:
             return state
     }
 }
-function comments ( state = { comments: []}, action){
+function comments ( state = {}, action){
     switch( action.type ){
         case 'GET_COMMENTS':
-        const { comments } = action
-            let stateComments = state.comments,
-                actionComments = comments;
-            // console.log( stateComments, actionComments)
-            let contains = false, results = [];
-            if ( stateComments.length === 0 && actionComments.length !== 0 ){
-                // console.log('here')
-                results = actionComments
-            } else if ( stateComments.length !== 0 && actionComments.length !==0 ){
-                for( var i = 0; i < actionComments.length; i++ ){
-                    for( var j = 0; j < stateComments.length; j++ ){
-                        // console.log('>>', stateComments[ i ].id, actionComments[ j ].id)
-                        if( stateComments[ i ].id === actionComments[ j ].id ){
-                            contains = true;
-                            break;
-                        }
-                    }
-                    if( !contains ){
-                        results.push(actionComments[ i ])
-                    } else{
-                        contains = false
-                    }
-                }
-            }
-            
-            // console.log('WHAT I GET', results, state.comments)
+            const { comments, id } = action
+            console.log('reducer', comments)
             return {
                 ...state,
-                comments: state.comments.concat(results)
+                [id]: comments
             }
+        // case 'GET_COMMENTS':
+        // const { comments } = action
+        //     let stateComments = state.comments,
+        //         actionComments = comments;
+        //     // console.log( stateComments, actionComments)
+        //     let contains = false, results = [];
+        //     if ( stateComments.length === 0 && actionComments.length !== 0 ){
+        //         // console.log('here')
+        //         results = actionComments
+        //     } else if ( stateComments.length !== 0 && actionComments.length !==0 ){
+        //         for( var i = 0; i < actionComments.length; i++ ){
+        //             for( var j = 0; j < stateComments.length; j++ ){
+        //                 // console.log('>>', stateComments[ i ].id, actionComments[ j ].id)
+        //                 if( stateComments[ i ].id === actionComments[ j ].id ){
+        //                     contains = true;
+        //                     break;
+        //                 }
+        //             }
+        //             if( !contains ){
+        //                 results.push(actionComments[ i ])
+        //             } else{
+        //                 contains = false
+        //             }
+        //         }
+        //     }
+            
+        //     // console.log('WHAT I GET', results, state.comments)
+        //     return {
+        //         ...state,
+        //         comments: state.comments.concat(results)
+        //     }
         case 'ADD_COMMENT':
         const newComment = action.comments
         // console.log('say what',newComment, state.comments, state.comments.concat(newComment))

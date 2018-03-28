@@ -48,7 +48,6 @@ const postNewPostSuccess = (post, res, sortBy) => {
 export const postNewPost = (data, sortBy) => dispatch => (
     API.postPost(data)
     .then(res => {
-        console.log('POSTS',data, res, sortBy)
         dispatch(postNewPostSuccess(data, res, sortBy))
     })
 )
@@ -58,22 +57,23 @@ export const sortByValue = (value) => {
         value
     }
 }
-// export function postNewPost({ data }) {
-
-//     return {
-//         type: 'ADD_COMMENT',
-//         comments: data
-//     }
-// }
-//-----
-
-export function getComments({ comments }) {
-    // console.log('action', comments)
+const getCommentsSuccess = (comments, id) => {
+    console.log('action',comments)
     return {
         type: 'GET_COMMENTS',
-        comments
+        comments,
+        id
     }
 }
+export const getComments = (id) => dispatch => (
+    API.getComments(id).then(comments => 
+        dispatch(getCommentsSuccess(comments, id))
+    )
+)
+
+//-----
+
+
 
 export function postNewComment({ data }) {
     // console.log('action', data)
