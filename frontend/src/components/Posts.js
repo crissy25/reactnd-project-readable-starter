@@ -5,22 +5,26 @@ import { updateCategory } from '../actions';
 
 class Posts extends React.Component {
     componentDidMount() {
+        console.log('did mount')
         let category = "all"
         if ( this.props.match ) {
+            console.log('here1')
             category = this.props.match.params.categories
-            console.log( 'cat 1st load', category )
             this.props.updateCurrentCategory(category)
         } else {
+            console.log('here2')
             this.props.updateCurrentCategory(category)
         }
     }
     componentWillReceiveProps( newProps ) {
+        console.log('will receive')
         let category = "all"
         if ( newProps.match ) {
+            console.log('here3')
             category = newProps.match.params.categories
-            console.log( 'cat will rec', category )
             this.props.updateCurrentCategory(category)
         } else {
+            console.log('here4')
             this.props.updateCurrentCategory(category)
         }
     }

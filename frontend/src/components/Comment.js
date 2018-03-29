@@ -7,7 +7,17 @@ import ThumbUp from 'material-ui/svg-icons/action/thumb-up'
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 import Delete from 'material-ui/svg-icons/action/delete'
+import EditComment from './EditComment'
 class Comment extends React.Component {
+    state = {
+        commentEditToggle: false
+    }
+    handleCommentEdit() {
+        this.setState({ commentEditToggle: true })
+    }
+    handleCloseCommentEdit() {
+        this.setState({ commentEditToggle: false })
+    }
     render () {
         const { comment } = this.props
         return (
@@ -28,13 +38,14 @@ class Comment extends React.Component {
                             </IconButton>
                         <div style={{ float: 'right', padding: '20px' }}>
                         <IconButton iconStyle={{ width: '20', height: '20' }}>
-                            <ModeEdit/>
+                            <ModeEdit onClick={this.handleCommentEdit.bind(this)}/>
                         </IconButton>
                         <IconButton iconStyle={{ width: '20', height: '20' }}>
                             <Delete/>
                         </IconButton>
                         </div>
                     </Card>
+                    { this.state.commentEditToggle && <EditComment comment={comment} id={comment.id} parentId={comment.parentId} open={this.state.commentEditToggle} close={this.handleCloseCommentEdit.bind(this)}/>}
                 </Card>
             </div>
         )

@@ -13,49 +13,22 @@ import { getComments } from '../actions';
 import Comment from './Comment'
 class Comments extends React.Component {
     state = {
-        comments: []
+        category: ''
     }
-    componentWillMount() {
-        const { getPostComments, id } = this.props;
+    componentDidMount(){
+        const { getPostComments, id, category } = this.props;
         getPostComments(id);
+        this.setState({ category: category.category })
     }
-    // componentDidMount() {
-    //     if ( this.props.id ) {
-    //         API.getComments( this.props.id ).then(( comments ) => {
-    //             this.setState({ comments: comments })
-    //             this.props.fetchComments({comments})
-    //         })
-    //     }
-    // }
-    // componentWillReceiveProps( newProps ) {
-    //     console.log( 'testing',newProps.comments )
-    //     if ( newProps.comments && newProps.comments.comments){
-    //         let newComments = newProps.comments.comments.slice(0),
-    //         currentComments = this.state.comments.slice(0),
-    //         final = [];
-    //         console.log('newComments',newComments)
-    //         if ( newComments && newComments.length !==0 && newComments != []) {
-    //             // currentComments.map((comment, index) => {
-    //             //     console.log('map',this.props.id, comment.id)
-    //             //     final = newComments.filter( newComment => newComment. parentId === this.props.id && newComment.id !== comment.id )
-    //             // })
-    //             // console.log('final',final)
-    //             // newComments.map((newComment, index) => {
-    //             //     currentComments.map((currentComment, index) => {
-    //             //         if ( this.props.id === newComment.parentId && newComment.id === currentComment.id ) {
-    //             //             final.push(newComment)
-    //             //         } else if ( this.props.id === newComment.parentId && newComment.id !== currentComment.id )
-    //             //     })
-    //             // })
-    //             final = newComments.filter( newComment => newComment.parentId === this.props.id )
-    //             console.log( 'final',final, final.length, currentComments.length )
-    //             if ( final.length !== currentComments.length ) {
-    //                 this.setState({ comments: final})
-    //             }
-                
-    //         }
-    //     }
-    // }
+    componentWillReceiveProps( newProps ) {
+        console.log('compo is mounting', newProps.category.category, this.state.category)
+        if ( newProps.category.category !== this.state.category){
+            const { getPostComments, id, category } = newProps;
+            getPostComments(id);
+            this.setState({ category: category.category })
+        }
+        
+    }
     render () {
         // const { comments } = this.props
         let commentsArray = this.props.comments[this.props.id]
@@ -74,8 +47,8 @@ class Comments extends React.Component {
         )
     }
 }
-const mapStateToProps = ({ comments }) => ({
-    comments
+const mapStateToProps = ({ comments, category }) => ({
+    comments, category
 })
 export default connect(mapStateToProps,{
     getPostComments: getComments

@@ -4,14 +4,15 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import uuid from 'uuid';
-
+import { incrementCommentCount, postNewComment } from '../actions/index';
+import { connect } from 'react-redux'
 class NewComment extends React.Component {
     state ={
         author: 'default',
         comment: 'default'
     }
     handleCommentPost() {
-        let data = [{
+        let data = {
             id: uuid(),
             parentId: this.props.id,
             timestamp: Date.now(),
@@ -20,9 +21,9 @@ class NewComment extends React.Component {
             voteScore: 0,
             deleted: false,
             parentDeleted: false
-          }]
-        this.props.postingNewComment({data})
-        this.props.incrementingCommentCount({data})
+          }
+        this.props.postingNewComment(data)
+        this.props.incrementingCommentCount(data)
         this.props.close()
     }
     handleAuthorChange(e) {
@@ -32,7 +33,6 @@ class NewComment extends React.Component {
         this.setState({ comment: e.target.value })
     }
     render () {
-        // onChange={this.handleChange('age')}
         const actions = [
                 <FlatButton label="Post" onClick={this.handleCommentPost.bind(this)} secondary={true} />,
                 <FlatButton label="Close" onClick={this.props.close}/>
@@ -74,4 +74,7 @@ class NewComment extends React.Component {
     }
 }
 
-export default NewComment;
+export default connect(undefined,{
+    incrementingCommentCount: incrementCommentCount,
+    postingNewComment: postNewComment
+})(NewComment);

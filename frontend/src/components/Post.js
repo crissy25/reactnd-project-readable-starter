@@ -12,6 +12,8 @@ import Add from 'material-ui/svg-icons/content/add'
 import Comments from './Comments';
 import NewComment from './NewComment';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import EditPost from './EditPost';
 // import { getComments } from '../actions'
 
 const headers = {
@@ -20,20 +22,21 @@ const headers = {
 }
 class Post extends React.Component {
     state = {
-        newCommentToggle: false
+        newCommentToggle: false,
+        postEditToggle: false
     }
 
-    handleAddNewPost() {
-        this.setState({ newPostToggle: true })
-    }
-    handleCloseAddNewPost() {
-        this.setState({ newPostToggle: false })
-    }
     handleAddNewComment() {
         this.setState({ newCommentToggle: true })
     }
     handleCloseAddNewComment() {
         this.setState({ newCommentToggle: false })
+    }
+    handlePostEdit() {
+        this.setState({ postEditToggle: true })
+    }
+    handleClosePostEdit() {
+        this.setState({ postEditToggle: false })
     }
     render () {
         const { post } = this.props
@@ -42,7 +45,7 @@ class Post extends React.Component {
         <div>
         <Card>
             <CardTitle 
-                title={post.title} 
+                title={<Link to={"/posts/"+post.id}>{post.title}</Link>} 
                 subtitle={post.author + ' ' + date} 
             />
             <CardText>
@@ -63,7 +66,7 @@ class Post extends React.Component {
                     </IconButton>
                 <div style={{ float: 'right', padding: '20px' }}>
                 <IconButton iconStyle={{ width: '20', height: '20' }}>
-                    <ModeEdit/>
+                    <ModeEdit onClick={this.handlePostEdit.bind(this)} />
                 </IconButton>
                 <IconButton iconStyle={{ width: '20', height: '20' }}>
                     <Delete/>
@@ -78,25 +81,10 @@ class Post extends React.Component {
                 </div>
             </Card>
              <Comments id={post.id}/>
-            {/*{ this.state.newCommentToggle && <NewComment incrementingCommentCount={this.props.incrementingCommentCount} id={post.id} open={this.state.newCommentToggle} close={this.handleCloseAddNewComment.bind(this)} postingNewComment={this.props.postingNewComment}/>} */}
+            { this.state.newCommentToggle && <NewComment id={post.id} open={this.state.newCommentToggle} close={this.handleCloseAddNewComment.bind(this)}/>}
+            { this.state.postEditToggle && <EditPost post={post} id={post.id} open={this.state.postEditToggle} close={this.handleClosePostEdit.bind(this)}/>}
         </Card></div>)
     }
 }
 
-// const mapStateToProps = ({ posts }) => ({
-//     posts
-// })
-// function mapDispatchToProps (dispatch) {
-//     return {
-//         fetchCategories: (data) => dispatch(getCategories(data)),
-//         fetchPosts: (data) => dispatch(getPosts(data)),
-//         fetchComments: (data) => dispatch(getComments(data)),
-//         postingNewComment: (data) => dispatch(postNewComment(data)),
-//         incrementingCommentCount: (data) => dispatch(incrementCommentCount(data))
-//     }
-// }
-// export default connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-// )(Post);
 export default Post;

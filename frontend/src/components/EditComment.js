@@ -1,55 +1,42 @@
 import React from 'react';
-import { connect } from 'react-redux'
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import uuid from 'uuid';
-import { postNewPost, addEmptyPostId } from '../actions'
-
-class NewPost extends React.Component {
+import { updateComment } from '../actions/index';
+import { connect } from 'react-redux'
+class EditComment extends React.Component {
     state = {
-        author: 'default',
-        title: 'default',
-        body: 'default'
+        id: this.props.comment.id,
+        body: this.props.comment.body,
+        author: this.props.comment.author
     }
-    handlePostSubmit() {
-        let id = uuid(),
-            data = {
-                id: id,
-                timestamp: Date.now(),
-                title: this.state.title,
-                body: this.state.body,
-                author: this.state.author,
-                category: this.props.category.category === 'all' ? 'react' : this.props.category.category,
-                voteScore: 0,
-                deleted: false,
-                commentCount: 0
-            };
-        this.props.postingNewPost(data, this.props.sortBy)
-        this.props.addingEmptyPostId(id)
+    handleCommentSubmit() {
+        let data = {
+            id: this.state.id,
+            body: this.state.body,
+            author: this.state.author
+          }
+        this.props.updatingComment(this.props.id, data, this.props.parentId)
         this.props.close()
     }
     handleAuthorChange(e) {
         this.setState({ author: e.target.value })
     }
-    handlePostTitle(e) {
-        this.setState({ title: e.target.value })
-    }
-    handlePostBody(e) {
+    handleCommentBody(e) {
         this.setState({ body: e.target.value })
     }
     render () {
         const actions = [
-                <FlatButton label="Post" secondary={true} onClick={this.handlePostSubmit.bind(this)}/>,
+            <FlatButton label="Post" onClick={this.handleCommentSubmit.bind(this)} secondary={true} />,
                 <FlatButton label="Close" onClick={this.props.close}/>
             ]
-        console.log(this.props.sortBy)
         return (
             <div>
                 <MuiThemeProvider>
                     <Dialog
-                        title={'New Post'}
+                        title={'Edit Post'}
                         actions={actions}
                         open={this.props.open}
                         onClose={this.props.close}
@@ -58,41 +45,32 @@ class NewPost extends React.Component {
                         <span style={{ marginRight: 20 }}>
                         <TextField
                         required
+                        value={this.state.author}
                         hintText="Enter your Name"
                         floatingLabelText="Name"
                         onChange={(e) => this.handleAuthorChange(e)}
                         />
                         </span>
-                        <span>
-                        <TextField
-                        required
-                        floatingLabelText="Title"
-                        hintText="Enter the Title"
-                        onChange={(e) => this.handlePostTitle(e)}
-                        />
-                        </span>
                         <div>
                         <TextField
                         required
+                        value={this.state.body}
                         multiLine={true}
                         fullWidth={true}
                         floatingLabelText="Content"
                         hintText="Enter your post"
-                        onChange={(e) => this.handlePostBody(e)}
                         rows={1}
                         rowsMax={7}
+                        onChange={(e) => this.handleCommentBody(e)}
                         />
-                        </div>
+                        </div>      
                     </Dialog>
                 </MuiThemeProvider>
             </div>
         )
     }
 }
-const mapStateToProps = ({ category, sortBy }) => ({
-    category, sortBy
-})
-export default connect(mapStateToProps,{
-    postingNewPost: postNewPost,
-    addingEmptyPostId: addEmptyPostId
-})(NewPost);
+
+export default connect(undefined,{
+    updatingComment: updateComment
+})(EditComment);

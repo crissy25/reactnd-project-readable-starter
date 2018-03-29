@@ -51,6 +51,14 @@ export const postNewPost = (data, sortBy) => dispatch => (
         dispatch(postNewPostSuccess(data, res, sortBy))
     })
 )
+
+export const addEmptyPostId = (id) => {
+    return{
+        type: 'ADD_EMPTY_POSTID',
+        id
+    }
+}
+
 export const sortByValue = (value) => {
     return {
         type: 'SORT_BY_VALUE',
@@ -71,22 +79,54 @@ export const getComments = (id) => dispatch => (
     )
 )
 
-//-----
-
-
-
-export function postNewComment({ data }) {
-    // console.log('action', data)
+const postNewCommentSuccess = (comment, res) => {
+    console.log('response', res)
     return {
         type: 'ADD_COMMENT',
-        comments: data
+        comment,
+        res
     }
 }
+export const postNewComment = (data) => dispatch => (
+    API.postComment(data)
+    .then(res => {
+        dispatch(postNewCommentSuccess(data, res))
+    })
+)
 
-export function incrementCommentCount({ data }) {
-    // console.log('action', data)
+export const incrementCommentCount = (data) => {
     return {
         type: 'INCREMENT_COMMENT_COUNT',
         data
     }
 }
+
+const updatePostSuccess = (id, data, sortBy) => {
+    return {
+        type: 'UPDATE_POST',
+        id,
+        data,
+        sortBy
+    }
+}
+export const updatePost = (id, data, sortBy) => dispatch => (
+    API.updatePost(id, data)
+    .then(res => {
+        dispatch(updatePostSuccess(id, data, sortBy))
+    })
+)
+
+const updateCommentSuccess = (id, data, parentId) => {
+    return {
+        type: 'UPDATE_COMMENT',
+        id,
+        data,
+        parentId
+    }
+}
+export const updateComment = (id, data, parentId) => dispatch => (
+    API.updateComment(id, data)
+    .then(res => {
+        dispatch(updateCommentSuccess(id, data, parentId))
+    })
+)

@@ -1,33 +1,26 @@
 import React from 'react';
-import { connect } from 'react-redux'
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import uuid from 'uuid';
-import { postNewPost, addEmptyPostId } from '../actions'
-
-class NewPost extends React.Component {
+import { updatePost } from '../actions/index';
+import { connect } from 'react-redux'
+class EditPost extends React.Component {
     state = {
-        author: 'default',
-        title: 'default',
-        body: 'default'
+        id: this.props.post.id,
+        title: this.props.post.title,
+        body: this.props.post.body,
+        author: this.props.post.author
     }
     handlePostSubmit() {
-        let id = uuid(),
-            data = {
-                id: id,
-                timestamp: Date.now(),
-                title: this.state.title,
-                body: this.state.body,
-                author: this.state.author,
-                category: this.props.category.category === 'all' ? 'react' : this.props.category.category,
-                voteScore: 0,
-                deleted: false,
-                commentCount: 0
-            };
-        this.props.postingNewPost(data, this.props.sortBy)
-        this.props.addingEmptyPostId(id)
+        let data = {
+            id: this.state.id,
+            title: this.state.title,
+            body: this.state.body,
+            author: this.state.author
+          }
+        this.props.updatingPost(this.props.id, data, this.props.parentId)
         this.props.close()
     }
     handleAuthorChange(e) {
@@ -41,15 +34,14 @@ class NewPost extends React.Component {
     }
     render () {
         const actions = [
-                <FlatButton label="Post" secondary={true} onClick={this.handlePostSubmit.bind(this)}/>,
+            <FlatButton label="Post" onClick={this.handlePostSubmit.bind(this)} secondary={true} />,
                 <FlatButton label="Close" onClick={this.props.close}/>
             ]
-        console.log(this.props.sortBy)
         return (
             <div>
                 <MuiThemeProvider>
                     <Dialog
-                        title={'New Post'}
+                        title={'Edit Post'}
                         actions={actions}
                         open={this.props.open}
                         onClose={this.props.close}
@@ -58,6 +50,7 @@ class NewPost extends React.Component {
                         <span style={{ marginRight: 20 }}>
                         <TextField
                         required
+                        value={this.state.author}
                         hintText="Enter your Name"
                         floatingLabelText="Name"
                         onChange={(e) => this.handleAuthorChange(e)}
@@ -66,6 +59,7 @@ class NewPost extends React.Component {
                         <span>
                         <TextField
                         required
+                        value={this.state.title}
                         floatingLabelText="Title"
                         hintText="Enter the Title"
                         onChange={(e) => this.handlePostTitle(e)}
@@ -74,25 +68,25 @@ class NewPost extends React.Component {
                         <div>
                         <TextField
                         required
+                        value={this.state.body}
                         multiLine={true}
                         fullWidth={true}
                         floatingLabelText="Content"
                         hintText="Enter your post"
-                        onChange={(e) => this.handlePostBody(e)}
                         rows={1}
                         rowsMax={7}
+                        onChange={(e) => this.handlePostBody(e)}
                         />
-                        </div>
+                        </div>      
                     </Dialog>
                 </MuiThemeProvider>
             </div>
         )
     }
 }
-const mapStateToProps = ({ category, sortBy }) => ({
-    category, sortBy
+const mapStateToProps = ({ sortBy }) => ({
+    sortBy
 })
 export default connect(mapStateToProps,{
-    postingNewPost: postNewPost,
-    addingEmptyPostId: addEmptyPostId
-})(NewPost);
+    updatingPost: updatePost
+})(EditPost);

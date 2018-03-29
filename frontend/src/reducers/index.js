@@ -50,22 +50,18 @@ function posts ( state = {}, action){
     switch( action.type ){
         case 'GET_POSTS':
             const { posts } = action
-            console.log(posts)
             return {
                 ...state,
                 posts
             }
         case 'INCREMENT_COMMENT_COUNT':
             const currentPosts = state.posts
-            // console.log('>>>', state.posts, action.data[ 0 ].parentId)
-            let parentId = action.data[ 0 ].parentId,
-                post = currentPosts.filter( post => post.id === parentId );
+            let parentId = action.data.parentId;
             currentPosts.map(( currentPost, index ) => {
                 if ( currentPost.id === parentId ) {
                     currentPost.commentCount += 1
                 }
             })
-            // post[0].commentCount = parseInt(post[0].commentCount) + 1
             console.log('--',currentPosts)
             return {
                 ...state,
@@ -94,6 +90,22 @@ function posts ( state = {}, action){
                 ...state,
                 posts: sortedPosts
             }
+        case 'UPDATE_POST':
+            let postId = action.id,
+                dataUpdate = action.data,
+                allPosts = state.posts,
+                editedPost = allPosts.filter( post => post.id === postId),
+                allSortedPosts;
+            allPosts.map((post, index)=>{
+                if(post.id===postId){
+                    allPosts[index] = {...editedPost[ 0 ], ...dataUpdate}
+                }
+            })
+            allSortedPosts = getSortedPosts( allPosts, action.sortBy)
+            return {
+                ...state,
+                posts: allSortedPosts
+            }
         default:
             return state
     }
@@ -102,48 +114,42 @@ function comments ( state = {}, action){
     switch( action.type ){
         case 'GET_COMMENTS':
             const { comments, id } = action
-            console.log('reducer', comments)
             return {
                 ...state,
                 [id]: comments
             }
-        // case 'GET_COMMENTS':
-        // const { comments } = action
-        //     let stateComments = state.comments,
-        //         actionComments = comments;
-        //     // console.log( stateComments, actionComments)
-        //     let contains = false, results = [];
-        //     if ( stateComments.length === 0 && actionComments.length !== 0 ){
-        //         // console.log('here')
-        //         results = actionComments
-        //     } else if ( stateComments.length !== 0 && actionComments.length !==0 ){
-        //         for( var i = 0; i < actionComments.length; i++ ){
-        //             for( var j = 0; j < stateComments.length; j++ ){
-        //                 // console.log('>>', stateComments[ i ].id, actionComments[ j ].id)
-        //                 if( stateComments[ i ].id === actionComments[ j ].id ){
-        //                     contains = true;
-        //                     break;
-        //                 }
-        //             }
-        //             if( !contains ){
-        //                 results.push(actionComments[ i ])
-        //             } else{
-        //                 contains = false
-        //             }
-        //         }
-        //     }
-            
-        //     // console.log('WHAT I GET', results, state.comments)
-        //     return {
-        //         ...state,
-        //         comments: state.comments.concat(results)
-        //     }
-        case 'ADD_COMMENT':
-        const newComment = action.comments
-        // console.log('say what',newComment, state.comments, state.comments.concat(newComment))
+        case 'UPDATE_COMMENT':
+            let commentId = action.id,
+                currentParentId = action.parentId,
+                dataUpdate = action.data,
+                allComments = state,
+                commentList = allComments[ currentParentId ];
+            commentList.map((comment, index)=>{
+                if( comment.id === commentId){
+                    commentList[index] = {...comment, ...dataUpdate}
+                }
+            })
             return {
                 ...state,
-                comments: state.comments.concat(newComment)
+                [currentParentId]: commentList
+            }
+
+        case 'ADD_COMMENT':
+        const newComment = action.comment,
+            { res } = action;
+        let existingComments = state;
+        let parentId = newComment.parentId,
+            commentsList = existingComments[ parentId ];
+        commentsList.push({...newComment, ...res})
+            return {
+                ...state,
+                comments: commentsList
+            }
+        case 'ADD_EMPTY_POSTID':
+        let postId = action.id;
+            return {
+                ...state,
+                [postId]: []
             }
         default:
             return state

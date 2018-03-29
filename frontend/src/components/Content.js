@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Posts from './Posts'
 import NewPost from './NewPost'
 import CreateNewPost from './CreateNewPost';
-
 class Content extends Component {
   render() {
     return (

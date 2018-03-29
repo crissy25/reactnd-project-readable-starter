@@ -27,12 +27,18 @@ export const getComments = (id) =>
     axios.get(`http://localhost:3001/posts/`+ id +`/comments`, { headers })
     .then(res => res.data)
 
-export const postComment = (data) => {
+export const postComment = (data) =>
     axios.post('http://localhost:3001/comments', data)
     .then(res => res.data)
-}
 
-export const updateCommentCount = (id, data) => {
-    axios.put('http://localhost:3001/posts' + id, data)
+export const updateCommentCount = (id, data) =>
+    axios.put('http://localhost:3001/posts/' + id, data)
     .then(res => res.data)
-}
+
+export const updatePost = (id, data) => 
+    axios.put('http://localhost:3001/posts/' + id, data)
+    .then(res => res.data)
+
+export const updateComment = (id, data) => 
+    axios.put('http://localhost:3001/comments/' + id, data)
+    .then(res => res.data)
