@@ -8,6 +8,8 @@ import ThumbDown from 'material-ui/svg-icons/action/thumb-down'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 import Delete from 'material-ui/svg-icons/action/delete'
 import EditComment from './EditComment'
+import { deleteComment } from '../actions/index';
+import { connect } from 'react-redux'
 class Comment extends React.Component {
     state = {
         commentEditToggle: false
@@ -17,6 +19,10 @@ class Comment extends React.Component {
     }
     handleCloseCommentEdit() {
         this.setState({ commentEditToggle: false })
+    }
+    handleCommentDelete() {
+        // this.props.deletingComment(this.props.comment.id, this.props.comment.parentId)
+        console.log('Clicked')
     }
     render () {
         const { comment } = this.props
@@ -41,7 +47,7 @@ class Comment extends React.Component {
                             <ModeEdit onClick={this.handleCommentEdit.bind(this)}/>
                         </IconButton>
                         <IconButton iconStyle={{ width: '20', height: '20' }}>
-                            <Delete/>
+                            <Delete onClick = {this.handleCommentDelete.bind(this)}/>
                         </IconButton>
                         </div>
                     </Card>
@@ -52,4 +58,7 @@ class Comment extends React.Component {
     }
 }
 
+// export default connect(undefined,{
+//     deletingComment: deleteComment
+// })(Comment);
 export default Comment;

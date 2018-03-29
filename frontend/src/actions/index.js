@@ -130,3 +130,30 @@ export const updateComment = (id, data, parentId) => dispatch => (
         dispatch(updateCommentSuccess(id, data, parentId))
     })
 )
+
+// const deletePostSuccess = (id) => {
+//     return {
+//         type: 'DELETE_POST',
+//         id
+//     }
+// }
+// export const deletePost = (id) => dispatch => (
+//     API.deletePost(id)
+//     .then(res => {
+//         dispatch(deletePostSuccess(id))
+//     })
+// )
+
+const deleteCommentSuccess = (id, parentId) => {
+    return {
+        type: 'DELETE_COMMENT',
+        id,
+        parentId
+    }
+}
+export const deleteComment = (id, parentId) => dispatch => (
+    API.deleteComment(id)
+    .then(res => {
+        dispatch(deleteCommentSuccess(id, parentId))
+    })
+)

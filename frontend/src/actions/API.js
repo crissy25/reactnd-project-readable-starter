@@ -42,3 +42,11 @@ export const updatePost = (id, data) =>
 export const updateComment = (id, data) => 
     axios.put('http://localhost:3001/comments/' + id, data)
     .then(res => res.data)
+
+export const deleteComment = (id) =>
+    axios.delete('http://localhost:3001/comments/' + id)
+    .then(res => res.data)
+
+export const deletePost = (id) =>
+    axios.delete('http://localhost:3001/posts/' + id)
+    .then(res => res.data)

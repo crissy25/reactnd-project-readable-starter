@@ -35,7 +35,7 @@ class Comments extends React.Component {
         console.log( 'here',this.props.comments[this.props.id] )
         return (
             <div>
-               {commentsArray && commentsArray !== [] && commentsArray.length !== 0 && commentsArray.map((comment, index) =>{
+               {commentsArray && commentsArray !== [] && commentsArray.length !== 0 && commentsArray.filter( comm => comm.deleted === false ).map((comment, index) =>{
                    return(
                        <Comment comment={comment} key={index}/>
                     // <div>wee</div>

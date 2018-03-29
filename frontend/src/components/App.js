@@ -5,7 +5,7 @@ import { Route, withRouter } from 'react-router-dom'
 import Header from './Header';
 import Content from './Content';
 import Sorter from './Sorter';
-import Post from './Post'
+import DetailedPost from './DetailedPost'
 class App extends Component {
     componentDidMount() {
         this.props.fetchCategories()
@@ -18,7 +18,7 @@ class App extends Component {
             <Sorter/>
             <Content/>
             <Route exact path="/posts/:id" render={(match)=>(
-                <Post match={match.match}/>
+                <DetailedPost match={match.match}/>
 //create a wrapper component which can fetch the post via an api call
             )} />
         </div>

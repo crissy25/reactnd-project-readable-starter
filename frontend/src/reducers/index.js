@@ -133,12 +133,22 @@ function comments ( state = {}, action){
                 ...state,
                 [currentParentId]: commentList
             }
-
+        // case 'DELETE_COMMENT':
+        //     let commId = action.id,
+        //         pId = action.parentId,
+        //         allComm = state,
+        //         commList = allComm[ pId ];
+        //     commList.map((comment, index)=>{
+        //         if(comment.id === commId){
+        //             commList[index] = {...comment, ...{ deleted: true }}
+        //         }
+        //     })
+        //     return state
         case 'ADD_COMMENT':
         const newComment = action.comment,
             { res } = action;
-        let existingComments = state;
-        let parentId = newComment.parentId,
+        let existingComments = state,
+        parentId = newComment.parentId,
             commentsList = existingComments[ parentId ];
         commentsList.push({...newComment, ...res})
             return {
