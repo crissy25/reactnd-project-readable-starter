@@ -6,6 +6,7 @@ const getCategoriesSuccess = (categories) => {
         categories
     }
 }
+
 export const getCategories = () => dispatch => (
     API.getCategories()
     .then(data => 
@@ -18,6 +19,7 @@ const getPostsSuccess = (posts) => {
         posts
     }
 }
+
 export const getPosts = () => dispatch => (
     API.getAllPosts().then(posts => 
         dispatch(getPostsSuccess(posts))
@@ -37,6 +39,7 @@ export const updateCategory = (category) => {
         category
     }
 }
+
 const postNewPostSuccess = (post, res, sortBy) => {
     return {
         type: 'ADD_POST',
@@ -45,6 +48,7 @@ const postNewPostSuccess = (post, res, sortBy) => {
         sortBy
     }
 }
+
 export const postNewPost = (data, sortBy) => dispatch => (
     API.postPost(data)
     .then(res => {
@@ -65,6 +69,7 @@ export const sortByValue = (value) => {
         value
     }
 }
+
 const getCommentsSuccess = (comments, id) => {
     console.log('action',comments)
     return {
@@ -73,6 +78,7 @@ const getCommentsSuccess = (comments, id) => {
         id
     }
 }
+
 export const getComments = (id) => dispatch => (
     API.getComments(id).then(comments => 
         dispatch(getCommentsSuccess(comments, id))
@@ -80,13 +86,13 @@ export const getComments = (id) => dispatch => (
 )
 
 const postNewCommentSuccess = (comment, res) => {
-    console.log('response', res)
     return {
         type: 'ADD_COMMENT',
         comment,
         res
     }
 }
+
 export const postNewComment = (data) => dispatch => (
     API.postComment(data)
     .then(res => {
@@ -109,6 +115,7 @@ const updatePostSuccess = (id, data, sortBy) => {
         sortBy
     }
 }
+
 export const updatePost = (id, data, sortBy) => dispatch => (
     API.updatePost(id, data)
     .then(res => {
@@ -124,6 +131,7 @@ const updateCommentSuccess = (id, data, parentId) => {
         parentId
     }
 }
+
 export const updateComment = (id, data, parentId) => dispatch => (
     API.updateComment(id, data)
     .then(res => {
@@ -131,18 +139,19 @@ export const updateComment = (id, data, parentId) => dispatch => (
     })
 )
 
-// const deletePostSuccess = (id) => {
-//     return {
-//         type: 'DELETE_POST',
-//         id
-//     }
-// }
-// export const deletePost = (id) => dispatch => (
-//     API.deletePost(id)
-//     .then(res => {
-//         dispatch(deletePostSuccess(id))
-//     })
-// )
+const deletePostSuccess = (id) => {
+    return {
+        type: 'DELETE_POST',
+        id
+    }
+}
+
+export const deletePost = (id) => dispatch => (
+    API.deletePost(id)
+    .then(res => {
+        dispatch(deletePostSuccess(id))
+    })
+)
 
 const deleteCommentSuccess = (id, parentId) => {
     return {
@@ -155,5 +164,63 @@ export const deleteComment = (id, parentId) => dispatch => (
     API.deleteComment(id)
     .then(res => {
         dispatch(deleteCommentSuccess(id, parentId))
+    })
+)
+
+const upVoteCommentSuccess = (id, data, parentId) => {
+    return {
+        type: 'UPVOTE_COMMENT',
+        id,
+        data,
+        parentId
+    }
+}
+export const upVoteComment = (id, data, parentId) => dispatch => (
+    API.upVoteComment(id, data)
+    .then(res => {
+        dispatch(upVoteCommentSuccess(id, data, parentId))
+    })
+)
+
+const downVoteCommentSuccess = (id, data, parentId) => {
+    return {
+        type: 'DOWNVOTE_COMMENT',
+        id,
+        data,
+        parentId
+    }
+}
+export const downVoteComment = (id, data, parentId) => dispatch => (
+    API.downVoteComment(id, data)
+    .then(res => {
+        dispatch(downVoteCommentSuccess(id, data, parentId))
+    })
+)
+
+const upVotePostSuccess = (id, data) => {
+    return {
+        type: 'UPVOTE_POST',
+        id,
+        data
+    }
+}
+export const upVotePost = (id, data) => dispatch => (
+    API.upVotePost(id, data)
+    .then(res => {
+        dispatch(upVotePostSuccess(id, data))
+    })
+)
+
+const downVotePostSuccess = (id, data) => {
+    return {
+        type: 'DOWNVOTE_POST',
+        id,
+        data
+    }
+}
+export const downVotePost = (id, data) => dispatch => (
+    API.downVotePost(id, data)
+    .then(res => {
+        dispatch(downVotePostSuccess(id, data))
     })
 )

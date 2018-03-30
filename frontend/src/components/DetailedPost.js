@@ -1,7 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Post from './Post'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Paper from 'material-ui/Paper'
+const style = {
+    height: '100%',
+    width: '80%',
+    margin: 'auto',
+    minHeight:'50px'
+}
 class DetailedPost extends Component {
     render() {
         const { posts } = this.props.posts;
@@ -10,7 +17,13 @@ class DetailedPost extends Component {
         return (
             <div>
                 <MuiThemeProvider>
-                    {filteredPost && filteredPost !== "" && <Post post={filteredPost[0]}/>}
+                    <Paper style={{...style, ...{padding: '10px'}}} zDepth={2}>
+                        <b>Single Post Display</b>
+                    </Paper>
+                    <Paper  style={style} zDepth={5}>
+                    {filteredPost && filteredPost !== "" && filteredPost.length !== 0 && <Post post={filteredPost[0]}/>}
+                    {filteredPost && filteredPost.length ===0 && <div>Sorry this post is no longer available</div>}
+                    </Paper>
                 </MuiThemeProvider>
             </div>
     );

@@ -1,10 +1,9 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import uuid from 'uuid';
-import { updatePost } from '../actions/index';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { updatePost } from '../actions/index'
 import { connect } from 'react-redux'
 class EditPost extends React.Component {
     state = {
@@ -48,35 +47,35 @@ class EditPost extends React.Component {
                         autoScrollBodyContent={true}
                     >
                         <span style={{ marginRight: 20 }}>
-                        <TextField
-                        required
-                        value={this.state.author}
-                        hintText="Enter your Name"
-                        floatingLabelText="Name"
-                        onChange={(e) => this.handleAuthorChange(e)}
-                        />
+                            <TextField
+                            required
+                            value={this.state.author}
+                            hintText="Enter your Name"
+                            floatingLabelText="Name"
+                            onChange={(e) => this.handleAuthorChange(e)}
+                            />
                         </span>
                         <span>
-                        <TextField
-                        required
-                        value={this.state.title}
-                        floatingLabelText="Title"
-                        hintText="Enter the Title"
-                        onChange={(e) => this.handlePostTitle(e)}
-                        />
+                            <TextField
+                            required
+                            value={this.state.title}
+                            floatingLabelText="Title"
+                            hintText="Enter the Title"
+                            onChange={(e) => this.handlePostTitle(e)}
+                            />
                         </span>
                         <div>
-                        <TextField
-                        required
-                        value={this.state.body}
-                        multiLine={true}
-                        fullWidth={true}
-                        floatingLabelText="Content"
-                        hintText="Enter your post"
-                        rows={1}
-                        rowsMax={7}
-                        onChange={(e) => this.handlePostBody(e)}
-                        />
+                            <TextField
+                            required
+                            value={this.state.body}
+                            multiLine={true}
+                            fullWidth={true}
+                            floatingLabelText="Content"
+                            hintText="Enter your post"
+                            rows={1}
+                            rowsMax={7}
+                            onChange={(e) => this.handlePostBody(e)}
+                            />
                         </div>      
                     </Dialog>
                 </MuiThemeProvider>

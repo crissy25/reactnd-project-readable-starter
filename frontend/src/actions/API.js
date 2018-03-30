@@ -1,22 +1,17 @@
 
 import axios from 'axios';
-const headers = {
-    'Authorization': 'whatever-you-want',
-    'Content-Type': 'application/json'   
-}
 axios.defaults.headers.common['Authorization'] = 'whatever-you-want';
-
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 export const getCategories = () => 
-    axios.get(`http://localhost:3001/categories`, { headers })
+    axios.get(`http://localhost:3001/categories`)
     .then(res => res.data)
 
 export const getAllPosts = () => 
-    axios.get(`http://localhost:3001/posts`, { headers })
+    axios.get(`http://localhost:3001/posts`)
     .then(res => res.data)
 
 export const getPostsByCategory = (category) => 
-    axios.get(`http://localhost:3001/`+ category +`/posts`, { headers })
+    axios.get(`http://localhost:3001/`+ category +`/posts`)
     .then(res => res.data)
 
 export const postPost = (data) =>
@@ -24,7 +19,7 @@ export const postPost = (data) =>
     .then(res => res.data)
 
 export const getComments = (id) => 
-    axios.get(`http://localhost:3001/posts/`+ id +`/comments`, { headers })
+    axios.get(`http://localhost:3001/posts/`+ id +`/comments`)
     .then(res => res.data)
 
 export const postComment = (data) =>
@@ -49,4 +44,21 @@ export const deleteComment = (id) =>
 
 export const deletePost = (id) =>
     axios.delete('http://localhost:3001/posts/' + id)
+    .then(res => res.data)
+
+
+export const upVoteComment = (id, data) =>
+    axios.post('http://localhost:3001/comments/' + id, data)
+    .then(res => res.data)
+
+export const downVoteComment = (id, data) =>
+    axios.post('http://localhost:3001/comments/' + id, data)
+    .then(res => res.data)
+
+export const upVotePost = (id, data) =>
+    axios.post('http://localhost:3001/posts/' + id, data)
+    .then(res => res.data)
+
+export const downVotePost = (id, data) =>
+    axios.post('http://localhost:3001/posts/' + id, data)
     .then(res => res.data)

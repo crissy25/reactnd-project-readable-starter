@@ -1,7 +1,7 @@
-import React from 'react';
-import {Card, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import React from 'react'
+import {Card, CardTitle, CardText} from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
+import IconButton from 'material-ui/IconButton'
 import Badge from 'material-ui/Badge'
 import ModeComment from 'material-ui/svg-icons/editor/mode-comment'
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up'
@@ -9,17 +9,13 @@ import ThumbDown from 'material-ui/svg-icons/action/thumb-down'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 import Delete from 'material-ui/svg-icons/action/delete'
 import Add from 'material-ui/svg-icons/content/add'
-import Comments from './Comments';
-import NewComment from './NewComment';
+import Comments from './Comments'
+import NewComment from './NewComment'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import EditPost from './EditPost';
-// import { getComments } from '../actions'
+import EditPost from './EditPost'
+import { deletePost, upVotePost, downVotePost } from '../actions'
 
-const headers = {
-    'Authorization': 'whatever-you-want',
-    'Accept': 'application/json'
-}
 class Post extends React.Component {
     state = {
         newCommentToggle: false,
@@ -38,6 +34,21 @@ class Post extends React.Component {
     handleClosePostEdit() {
         this.setState({ postEditToggle: false })
     }
+    handlePostDelete() {
+        this.props.deletingPost(this.props.post.id)
+    }
+    handleUpVotePost() {
+        let data = {
+            option: "upVote"
+        }
+        this.props.upVotingPost(this.props.post.id, data)
+    }
+    handleDownVotePost() {
+        let data = {
+            option: "downVote"
+        }
+        this.props.downVotingPost(this.props.post.id, data)
+    }
     render () {
         const { post } = this.props
         let date = new Date(post.timestamp)
@@ -45,7 +56,7 @@ class Post extends React.Component {
         <div>
         <Card>
             <CardTitle 
-                title={<Link to={"/posts/"+post.id}>{post.title}</Link>} 
+                title={<Link to={"/"+post.category+"/"+post.id}>{post.title}</Link>} 
                 subtitle={post.author + ' ' + date} 
             />
             <CardText>
@@ -58,17 +69,17 @@ class Post extends React.Component {
                     </IconButton>
                 </Badge>
                 <span style={{ marinBottom: 10, marginRight: 10, fontWeight: 'bold'}}>{post.voteScore}</span>
-                    <IconButton>
+                    <IconButton onClick={this.handleUpVotePost.bind(this)}>
                         <ThumbUp />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={this.handleDownVotePost.bind(this)}>
                         <ThumbDown />
                     </IconButton>
                 <div style={{ float: 'right', padding: '20px' }}>
-                <IconButton iconStyle={{ width: '20', height: '20' }}>
-                    <ModeEdit onClick={this.handlePostEdit.bind(this)} />
+                <IconButton iconStyle={{ width: '20', height: '20' }} onClick={this.handlePostEdit.bind(this)} >
+                    <ModeEdit/>
                 </IconButton>
-                <IconButton iconStyle={{ width: '20', height: '20' }}>
+                <IconButton iconStyle={{ width: '20', height: '20' }} onClick={this.handlePostDelete.bind(this)}>
                     <Delete/>
                 </IconButton>
                 <FlatButton
@@ -87,4 +98,8 @@ class Post extends React.Component {
     }
 }
 
-export default Post;
+export default connect(undefined,{
+    deletingPost: deletePost,
+    upVotingPost: upVotePost,
+    downVotingPost: downVotePost
+})(Post);

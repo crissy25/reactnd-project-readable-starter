@@ -33,8 +33,8 @@ function getSortedPosts ( posts, sortBy ) {
             return posts
     }
 }
+
 function categories ( state = {}, action){
-    // console.log('reducer', action)
     switch (action.type) {
         case 'GET_CATEGORIES':
             const { categories } = action
@@ -46,6 +46,7 @@ function categories ( state = {}, action){
             return state
     }
 }
+
 function posts ( state = {}, action){
     switch( action.type ){
         case 'GET_POSTS':
@@ -62,7 +63,6 @@ function posts ( state = {}, action){
                     currentPost.commentCount += 1
                 }
             })
-            console.log('--',currentPosts)
             return {
                 ...state,
                 posts: currentPosts
@@ -70,8 +70,8 @@ function posts ( state = {}, action){
         case 'SORT_ALL_POSTS':
             const { sortBy } = action,
                 originalPosts = state.posts.slice(0)
-            let array = []
-                array = getSortedPosts( originalPosts, sortBy )
+            let array = [];
+            array = getSortedPosts( originalPosts, sortBy )
             return {
                 ...state,
                 posts: array
@@ -106,10 +106,49 @@ function posts ( state = {}, action){
                 ...state,
                 posts: allSortedPosts
             }
+        case 'DELETE_POST':
+            let pId = action.id,
+                allposts = state.posts;
+            allposts.map((post, index)=>{
+                if(post.id === pId){
+                    allposts[index] = {...post, ...{deleted: true}}
+                }
+            })
+            return {
+                ...state,
+                [pId]: allposts
+            }
+        case 'UPVOTE_POST':
+            let pId1 = action.id,
+                allposts1 = state.posts;
+            allposts1.map((post, index)=>{
+                if(post.id === pId1){
+                    post.voteScore += 1
+                    allposts1[index] = {...post}
+                }
+            })
+            return {
+                ...state,
+                [pId1]: allposts1
+            }
+        case 'DOWNVOTE_POST':
+            let pId2 = action.id,
+                allposts2 = state.posts;
+            allposts2.map((post, index)=>{
+                if(post.id === pId2){
+                    post.voteScore -= 1
+                    allposts2[index] = {...post}
+                }
+            })
+            return {
+                ...state,
+                [pId2]: allposts2
+            }
         default:
             return state
     }
 }
+
 function comments ( state = {}, action){
     switch( action.type ){
         case 'GET_COMMENTS':
@@ -133,17 +172,50 @@ function comments ( state = {}, action){
                 ...state,
                 [currentParentId]: commentList
             }
-        // case 'DELETE_COMMENT':
-        //     let commId = action.id,
-        //         pId = action.parentId,
-        //         allComm = state,
-        //         commList = allComm[ pId ];
-        //     commList.map((comment, index)=>{
-        //         if(comment.id === commId){
-        //             commList[index] = {...comment, ...{ deleted: true }}
-        //         }
-        //     })
-        //     return state
+        case 'DELETE_COMMENT':
+            let commId = action.id,
+                pId = action.parentId,
+                allComm = state,
+                commList = allComm[ pId ];
+            commList.map((comment, index)=>{
+                if(comment.id === commId){
+                    commList[index] = {...comment, ...{ deleted: true }}
+                }
+            })
+            return {
+                ...state,
+                [pId]: commList
+            }
+        case 'UPVOTE_COMMENT':
+            let commId1 = action.id,
+                pId1 = action.parentId,
+                allComm1 = state,
+                commList1 = allComm1[ pId1 ];
+            commList1.map((comment, index)=>{
+                if(comment.id === commId1){
+                    comment.voteScore += 1
+                    commList1[index] = {...comment}
+                }
+            })
+            return {
+                ...state,
+                [pId1]: commList1
+            }
+        case 'DOWNVOTE_COMMENT':
+            let commId2 = action.id,
+                pId2 = action.parentId,
+                allComm2 = state,
+                commList2 = allComm2[ pId2 ];
+            commList2.map((comment, index)=>{
+                if(comment.id === commId2){
+                    comment.voteScore -= 1
+                    commList2[index] = {...comment}
+                }
+            })
+            return {
+                ...state,
+                [pId2]: commList2
+            }
         case 'ADD_COMMENT':
         const newComment = action.comment,
             { res } = action;
@@ -165,6 +237,7 @@ function comments ( state = {}, action){
             return state
     }
 }
+
 function category ( state = {}, action){
     switch( action.type ){
         case 'UPDATE_CATEGORY':
@@ -177,6 +250,7 @@ function category ( state = {}, action){
             return state
         }
 }
+
 function sortBy ( state = {}, action){
     switch( action.type ){
         case 'SORT_BY_VALUE':
@@ -188,7 +262,7 @@ function sortBy ( state = {}, action){
             return state
     }
 }
-// export default categories
+
 export default combineReducers({
     categories,
     posts,

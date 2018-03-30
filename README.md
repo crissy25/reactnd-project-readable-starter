@@ -12,6 +12,7 @@ To get started developing right away:
     - `cd api-server`
     - `npm install`
     - `node server`
+    The server must run on port 3001
 * In another terminal window, use Create React App to scaffold out the front-end
     - `create-react-app frontend`
     - `cd frontend`
@@ -20,3 +21,7 @@ To get started developing right away:
 ## API Server
 
 Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+
+## FRONTEND 
+
+Information about Front End can be found in its [README file](frontend/README.md).

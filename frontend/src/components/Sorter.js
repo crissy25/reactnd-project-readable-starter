@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { sortAllPosts, sortByValue } from '../actions';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+import { sortAllPosts, sortByValue } from '../actions'
 class Sorter extends React.Component {
     state = {
         value: null
